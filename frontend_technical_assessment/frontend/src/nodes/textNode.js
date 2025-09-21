@@ -5,6 +5,13 @@
 import { BaseNode } from './baseNode';
 
 export const TextNode = ({ id, data }) => {
+
+  const regex = /\{\{\s*([a-zA-Z_$][\w$]*)\s*\}\}/g;
+  const matches = [...(data?.currText || "").matchAll(regex)].map(m => m[1]);
+
+  // Default + dynamic handles
+  const inputHandles = [...new Set(matches)];
+  
   return (
     <div>
       <BaseNode 
@@ -12,8 +19,9 @@ export const TextNode = ({ id, data }) => {
         data={data}
         nodeName='Text'
         fields={[
-          { name: 'Text', type: 'text', valueKey: 'currText', placeholder: '{{input}}'}
+          { name: 'Text', type: 'textarea', valueKey: 'currText', placeholder: '{{input}}'}
         ]}
+        inputHandles={inputHandles}
         outputHandles={['output']}
       />
     </div>
